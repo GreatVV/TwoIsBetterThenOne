@@ -8,8 +8,6 @@ public class Game : MonoBehaviour
     {
         var unitFactory = new UnitFactory(Context, new MockFactory(Context));
         var unit = unitFactory.CreateUnit();
-        Context.VirtualCamera.Follow = unit.transform;
-        Context.VirtualCamera.LookAt = unit.transform;
     }
 
 }

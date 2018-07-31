@@ -5,6 +5,7 @@ public class Unit : MonoBehaviour
     public IInputController PartOne;
     public IInputController PartTwo;
     public Rigidbody Rigidbody;
+    public Transform CameraTransform;
 
     public void OnCommand(UnitCommand command)
     {

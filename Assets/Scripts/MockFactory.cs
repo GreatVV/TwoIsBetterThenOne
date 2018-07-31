@@ -12,7 +12,13 @@
         var contoller =  new CompositeControlAbility(_context);
         contoller.Abilities.Add(new MoveControlAbility(_context));
         contoller.Abilities.Add(new JumpControlAbility(_context, _context.Player1Config.JumpConfig));
-        return new PlayerInputController(new KeyBoardController(), contoller);
+
+        return new CompositeController(new[]
+        {
+            new PlayerInputController(new KeyBoardController(), contoller),
+            new PlayerInputController(new MouseController(),new RotationControlAbility(_context) ),
+        });
+
     }
 
     public IInputController GetSecondPlayer()
