@@ -5,6 +5,7 @@ using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
+
 /// <summary>
 /// Implements teams in a room/game with help of player properties. Access them by PhotonPlayer.GetTeam extension.
 /// </summary>
@@ -14,8 +15,9 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 /// </remarks>
 public class PunTeams : MonoBehaviour
 {
+    PhotonMulpiplayer.LobbyUI lobbyUI;
     /// <summary>Enum defining the teams available. First team should be neutral (it's the default value any field of this enum gets).</summary>
-    public enum Team : byte {none, red, blue};
+    public enum Team : byte {none, red, blue,yellow,orange,green};
     public enum Role : byte { none,driver,shooter};
 
     /// <summary>The main list of teams with their player-lists. Automatically kept up to date.</summary>
@@ -32,6 +34,7 @@ public class PunTeams : MonoBehaviour
 
     public void Start()
     {
+        lobbyUI = GetComponent<PhotonMulpiplayer.LobbyUI>();
         PlayersPerTeam = new Dictionary<Team, List<PhotonPlayer>>();
         Array enumVals = Enum.GetValues(typeof (Team));
         foreach (var enumVal in enumVals)
@@ -76,6 +79,17 @@ public class PunTeams : MonoBehaviour
 
     #endregion
 
+    public void SwapPlayers(Team team)
+    {
+        List<PhotonPlayer> players = PlayersPerTeam[team];
+
+        if (players.Count < 2)
+            return;
+
+        Role role = players[0].GetRole();
+        players[0].SetRole(players[1].GetRole());
+        players[1].SetRole(role);
+    }
 
     public void UpdateTeams()
     {
@@ -90,25 +104,40 @@ public class PunTeams : MonoBehaviour
             PhotonPlayer player = PhotonNetwork.playerList[i];
             Team playerTeam = player.GetTeam();
             PlayersPerTeam[playerTeam].Add(player);
+          
         }
+
+        //for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+        //{
+        //    print(PhotonNetwork.playerList[i].NickName);
+        //    print(PhotonNetwork.playerList[i].GetTeam());
+        //    print(PhotonNetwork.playerList[i].GetRole());
+        //}
+
+        lobbyUI.UpdateUI();
     }
 
-    public void JoinTeam(PhotonPlayer currentPlayer, Team team,Role role)
+    public bool JoinTeam(PhotonPlayer currentPlayer, Team team,Role role)
     {
+        bool positionAvailable = true;
         for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
-            bool positionAvailable = true;
             PhotonPlayer player = PhotonNetwork.playerList[i];
             if ((player.GetTeam()==team)&&(player.GetRole()==role))
             {
                 positionAvailable = false;
             }
-
-            if (positionAvailable)
-            {
-                currentPlayer.SetTeam(team);
-            }
         }
+
+        if (positionAvailable)
+        {
+            currentPlayer.SetTeam(team);
+            currentPlayer.SetRole(role);
+            UpdateTeams();
+            return true;
+        }
+   
+        return false;
     }
 }
 
@@ -173,7 +202,7 @@ public static class TeamExtensions
         PunTeams.Role currentRole = player.GetRole();
         if (currentRole != role)
         {
-            player.SetCustomProperties(new Hashtable() { { PunTeams.TeamPlayerProp, (byte)role } });
+            player.SetCustomProperties(new Hashtable() { { PunTeams.RolePlayerProp, (byte)role } });
         }
     }
 }

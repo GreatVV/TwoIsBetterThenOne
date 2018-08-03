@@ -3,31 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TeamButton : MonoBehaviour
+namespace PhotonMulpiplayer
 {
-    public PunTeams.Role role;
-    public PunTeams.Team team;
-    PhotonPlayer assignedPlayer;
-    Image image;
-
-    void Start()
+    public class TeamButton : MonoBehaviour
     {
-        image = GetComponent<Image>();
-    }
+        public PunTeams.Role role;
+        public PunTeams.Team team;
+        public PhotonPlayer assignedPlayer;
+        Image image;
+        Text text;
 
-    public void UpdateButton(PhotonPlayer player)
-    {
-        assignedPlayer = player;
-
-        if (assignedPlayer != null)
+        void Awake()
         {
-            image.color = Color.red;
+            image = GetComponent<Image>();
+            text = GetComponentInChildren<Text>();
+            assignedPlayer = null;
         }
-        else
+
+        public void UpdateButton()
         {
-            image.color = Color.green;
+            assignedPlayer = null;
+            for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+            {
+                PhotonPlayer player = PhotonNetwork.playerList[i];
+                PunTeams.Team playerTeam = player.GetTeam();
+                PunTeams.Role playerRole = player.GetRole();
+                if ((playerTeam == team)&&(playerRole == role))
+                {
+                    assignedPlayer = player;
+                    break;
+                }
+            }
+            
+            if (assignedPlayer != null)
+            {
+                image.color = Color.red;
+                text.text = assignedPlayer.NickName;
+            }
+            else
+            {
+                image.color = Color.green;
+                text.text = "";
+            }
+        }
+
+        public void TryAssignPlayer()
+        {
+            if (assignedPlayer == null)
+            {
+                LobbyManager.Instance().TryAssignPlayer(PhotonNetwork.player, team, role);
+            }
         }
     }
-
-
 }

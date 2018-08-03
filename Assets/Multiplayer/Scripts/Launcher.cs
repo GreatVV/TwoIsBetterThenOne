@@ -13,7 +13,8 @@ namespace PhotonMulpiplayer
 
         public override void OnConnectedToMaster()
         {
-            Debug.Log("DemoAnimator/Launcher: OnConnectedToMaster() was called by PUN");
+            Debug.Log("OnConnectedToMaster() was called by PUN");
+            //PhotonNetwork.JoinRandomRoom();
         }
 
 
@@ -22,10 +23,25 @@ namespace PhotonMulpiplayer
             Debug.LogWarning("DemoAnimator/Launcher: OnDisconnectedFromPhoton() was called by PUN");
         }
 
+        public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
+        {
+            Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom();");
+            // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
+            PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 10 }, null);
+        }
+
+        public override void OnJoinedRoom()
+        {
+            Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room.");
+            PhotonNetwork.LoadLevel("Lobby");
+        }
+
+
+
 
         #endregion
 
-        
+
         void Awake()
         {
             PhotonNetwork.autoJoinLobby = false;
@@ -44,6 +60,23 @@ namespace PhotonMulpiplayer
         /// </summary>
         public void Connect()
         {
+            if (!PhotonNetwork.connected)
+            {
+                PhotonNetwork.ConnectUsingSettings(_gameVersion);
+            }
+                
+            //if (PhotonNetwork.connected)
+            //{
+            //    PhotonNetwork.JoinRandomRoom();
+            //}
+            //else
+            //{
+            //    PhotonNetwork.ConnectUsingSettings(_gameVersion);
+            //}
+        }
+
+        public void JoinRoom()
+        {
             if (PhotonNetwork.connected)
             {
                 PhotonNetwork.JoinRandomRoom();
@@ -53,7 +86,6 @@ namespace PhotonMulpiplayer
                 PhotonNetwork.ConnectUsingSettings(_gameVersion);
             }
         }
-
 
     }
 }

@@ -15,6 +15,7 @@ namespace PhotonMulpiplayer
         const int teamSize = 2;
         PhotonPlayer[,] teams;
         [SerializeField] LobbyUI lobbyUI;
+        [SerializeField] PunTeams punTeams;
 
 
         void Awake()
@@ -42,38 +43,15 @@ namespace PhotonMulpiplayer
             return lobbyManager;
         }
 
-        public void SetPlayer(PhotonPlayer player, int teamId,int position)
+        public void TryAssignPlayer(PhotonPlayer player, PunTeams.Team team, PunTeams.Role role)
         {
-            RemovePlayer(player);
-            teams[teamId, position] = player;
-            UpdateTeams();
+            punTeams.JoinTeam(player, team, role);
         }
 
-        public void RemovePlayer(PhotonPlayer player)
+        public void SwapPlayers(PunTeams.Team team)
         {
-            for (int i = 0; i < teamCount; i++)
-            {
-                for (int j = 0; j < teamSize; j++)
-                {
-                    if (player==teams[i,j])
-                    {
-                        teams[i, j] = null;
-                    }
-                }
-            }
-            UpdateTeams();
+            punTeams.SwapPlayers(team);
         }
-
-        void UpdateTeams()
-        {
-
-        }
-
-        public int GetTeamId()
-        {
-            teamIdCount++;
-
-            return teamIdCount;
-        }
+        
     }
 }
