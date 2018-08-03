@@ -205,4 +205,20 @@ public static class TeamExtensions
             player.SetCustomProperties(new Hashtable() { { PunTeams.RolePlayerProp, (byte)role } });
         }
     }
+
+    //public static void SetAcceptState(this PhotonPlayer player, PunTeams.Role role)
+    //{
+    //    if (!PhotonNetwork.connectedAndReady)
+    //    {
+    //        Debug.LogWarning("JoinTeam was called in state: " + PhotonNetwork.connectionStateDetailed + ". Not connectedAndReady.");
+    //        return;
+    //    }
+
+    //    PunTeams.Role currentRole = player.GetRole();
+    //    if (currentRole != role)
+    //    {
+    //        player.SetCustomProperties(new Hashtable() { { PunTeams.RolePlayerProp, (byte)role } });
+    //    }
+    //}
+
 }

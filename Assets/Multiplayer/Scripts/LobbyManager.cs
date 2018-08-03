@@ -10,10 +10,8 @@ namespace PhotonMulpiplayer
     public class LobbyManager : MonoBehaviour
     {
         public static LobbyManager lobbyManager;
-        int teamIdCount = -1;
         [SerializeField] int teamCount = 5;
         const int teamSize = 2;
-        PhotonPlayer[,] teams;
         [SerializeField] LobbyUI lobbyUI;
         [SerializeField] PunTeams punTeams;
 
@@ -28,7 +26,6 @@ namespace PhotonMulpiplayer
 
         void Start()
         {
-            teams = new PhotonPlayer[teamCount, teamSize];
             lobbyUI.InitUI(teamCount, teamSize);
         }
 
@@ -52,6 +49,44 @@ namespace PhotonMulpiplayer
         {
             punTeams.SwapPlayers(team);
         }
-        
+
+        void CheckReadyStatus()
+        {
+            bool everyoneReady = true;
+            for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+            {
+                PhotonPlayer player = PhotonNetwork.playerList[i];
+                object ready;
+                player.CustomProperties.TryGetValue("isReady", out ready);
+                if (!(bool)ready)
+                {
+                    everyoneReady = false;
+                }
+            }
+            if (!everyoneReady)
+            {
+                print("not everyone is ready");
+            }
+            else
+            {
+                print("everyone is ready");
+            }
+        }
+
+        public void PlayerIsReady()
+        {
+            object teamId;
+            //PhotonNetwork.player.CustomProperties.TryGetValue("team", out teamId);
+            if ((PhotonNetwork.player.CustomProperties.TryGetValue("team", out teamId))&&(PunTeams.Team)teamId != PunTeams.Team.none)
+            {
+                PhotonNetwork.player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "isReady", true } });
+                CheckReadyStatus();
+            }
+            else
+            {
+                print("team is not assigned");
+            }
+            
+        }
     }
 }

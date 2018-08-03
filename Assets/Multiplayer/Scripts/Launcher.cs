@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PhotonMulpiplayer
 {
     public class Launcher : Photon.PunBehaviour
     {
         string _gameVersion = "1";
+        [SerializeField] Button joinButton;
+
 
         #region Photon.PunBehaviour CallBacks
 
@@ -26,7 +29,6 @@ namespace PhotonMulpiplayer
         public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
         {
             Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom();");
-            // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
             PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 10 }, null);
         }
 
@@ -37,7 +39,11 @@ namespace PhotonMulpiplayer
         }
 
 
-
+        public override void OnConnectedToPhoton()
+        {
+            Debug.Log("Connected to Photon");
+            joinButton.interactable = true;
+        }
 
         #endregion
 

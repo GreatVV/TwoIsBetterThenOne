@@ -631,7 +631,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1564933150}
   m_OnClick:
     m_PersistentCalls:
@@ -710,6 +710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1f402dfc046f1448f05c3035fe7795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joinButton: {fileID: 1564933149}
 --- !u!4 &1596641272
 Transform:
   m_ObjectHideFlags: 0
