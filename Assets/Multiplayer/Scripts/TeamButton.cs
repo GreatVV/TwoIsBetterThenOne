@@ -28,6 +28,7 @@ namespace PhotonMulpiplayer
                 PhotonPlayer player = PhotonNetwork.playerList[i];
                 PunTeams.Team playerTeam = player.GetTeam();
                 PunTeams.Role playerRole = player.GetRole();
+
                 if ((playerTeam == team)&&(playerRole == role))
                 {
                     assignedPlayer = player;

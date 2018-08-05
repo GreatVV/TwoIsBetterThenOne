@@ -8,7 +8,8 @@ namespace PhotonMulpiplayer
     public class Launcher : Photon.PunBehaviour
     {
         string _gameVersion = "1";
-        [SerializeField] Button joinButton;
+       // [SerializeField] Button joinButton;
+        [SerializeField] MainMenuUI menuUI;
 
 
         #region Photon.PunBehaviour CallBacks
@@ -23,13 +24,14 @@ namespace PhotonMulpiplayer
 
         public override void OnDisconnectedFromPhoton()
         {
-            Debug.LogWarning("DemoAnimator/Launcher: OnDisconnectedFromPhoton() was called by PUN");
+            Debug.LogWarning(" OnDisconnectedFromPhoton() was called by PUN");
         }
 
         public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
         {
-            Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom();");
-            PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 10 }, null);
+            // Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom();");
+            Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available");
+
         }
 
         public override void OnJoinedRoom()
@@ -42,7 +44,8 @@ namespace PhotonMulpiplayer
         public override void OnConnectedToPhoton()
         {
             Debug.Log("Connected to Photon");
-            joinButton.interactable = true;
+            menuUI.Connect();
+            //joinButton.interactable = true;
         }
 
         #endregion
@@ -50,6 +53,7 @@ namespace PhotonMulpiplayer
 
         void Awake()
         {
+            menuUI.Init();
             PhotonNetwork.autoJoinLobby = false;
 
             PhotonNetwork.automaticallySyncScene = true;
@@ -70,15 +74,6 @@ namespace PhotonMulpiplayer
             {
                 PhotonNetwork.ConnectUsingSettings(_gameVersion);
             }
-                
-            //if (PhotonNetwork.connected)
-            //{
-            //    PhotonNetwork.JoinRandomRoom();
-            //}
-            //else
-            //{
-            //    PhotonNetwork.ConnectUsingSettings(_gameVersion);
-            //}
         }
 
         public void JoinRoom()
@@ -91,6 +86,11 @@ namespace PhotonMulpiplayer
             {
                 PhotonNetwork.ConnectUsingSettings(_gameVersion);
             }
+        }
+
+        public void CreateRoom()
+        {
+            PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 10 }, null);
         }
 
     }
