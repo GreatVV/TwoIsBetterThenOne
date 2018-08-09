@@ -19,6 +19,7 @@ public class UnitFactory
         unit.PartOne.Command += unit.OnCommand;
         unit.PartTwo = _controllerFactory.GetSecondPlayer();
         unit.PartTwo.Command += unit.OnCommand;
+        unit.GetComponentInChildren<CameraController>().target = unit.transform;
 
         return unit;
     }

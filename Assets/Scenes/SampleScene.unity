@@ -5295,8 +5295,11 @@ MonoBehaviour:
       JumpConfig:
         MinJumpPower: 5
         MinJumpTime: 0.2
-        JumpPowerDelta: 10
+        JumpPowerDelta: 1
         MaxJumpTime: 1
+      MouseSensitivity: 500
+      CameraHeight: 0
+      CameraDistance: 5
 --- !u!4 &1680197420
 Transform:
   m_ObjectHideFlags: 0

@@ -14,9 +14,11 @@ public class RotateCameraCommand : UnitCommand
 
     public override void Apply(Unit unit)
     {
+        /*
         offsetX = Quaternion.AngleAxis (Delta.x, Vector3.up) * offsetX;
         offsetY = Quaternion.AngleAxis (Delta.y, Vector3.right) * offsetY;
         unit.CameraTransform.transform.position = unit.transform.position + offsetX + offsetY;
         unit.CameraTransform.transform.LookAt(unit.transform.position);
+        */
     }
 }

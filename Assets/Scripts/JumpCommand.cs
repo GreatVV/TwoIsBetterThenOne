@@ -14,7 +14,7 @@ public class JumpCommand : UnitCommand
         if (!unit.Rigidbody.SweepTest(Vector3.down, out hitInfo))
         {
             Debug.Log("Jump power: "+JumpPower);
-            unit.Rigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
+            unit.Rigidbody.AddForce(Vector3.up * Mathf.Sqrt(JumpPower * -2f * Physics.gravity.y), ForceMode.VelocityChange);
         }
     }
 }
