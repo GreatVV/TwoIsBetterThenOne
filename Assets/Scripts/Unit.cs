@@ -6,6 +6,9 @@ public class Unit : MonoBehaviour
     public IInputController PartTwo;
     public Rigidbody Rigidbody;
     public Transform CameraTransform;
+    public Weapon Weapon;
+    public Health Health;
+    public int UnitID;
 
     public void OnCommand(UnitCommand command)
     {
