@@ -11,9 +11,15 @@ namespace PhotonMulpiplayer
         [SerializeField] GameObject teamButtonPrefab;
         TeamButton[][] teamButtons;
         [SerializeField] FreePlayerList playerList;
+        [SerializeField] Button leaveButton;
         int teamCount;
         int teamSize;
 
+        /// <summary>
+        /// Initialize UI with given parameters
+        /// </summary>
+        /// <param name="teamCount"></param>
+        /// <param name="teamSize"></param>
         public void InitUI(int teamCount, int teamSize)
         {
             this.teamCount = teamCount;
@@ -37,6 +43,9 @@ namespace PhotonMulpiplayer
             UpdateUI();
         }
 
+        /// <summary>
+        /// Update all Team Buttons and list of free players
+        /// </summary>
         public void UpdateUI()
         {
             for (int i = 0; i < teamCount; i++)

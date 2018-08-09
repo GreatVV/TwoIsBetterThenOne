@@ -27,7 +27,9 @@ namespace PhotonMulpiplayer
         void Start()
         {
             lobbyUI.InitUI(teamCount, teamSize);
+            PhotonNetwork.player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "isReady", false } });
         }
+
 
         public static LobbyManager Instance()
         {
@@ -40,16 +42,21 @@ namespace PhotonMulpiplayer
             return lobbyManager;
         }
 
+
         public void TryAssignPlayer(PhotonPlayer player, PunTeams.Team team, PunTeams.Role role)
         {
             punTeams.JoinTeam(player, team, role);
         }
+
 
         public void SwapPlayers(PunTeams.Team team)
         {
             punTeams.SwapPlayers(team);
         }
 
+        /// <summary>
+        /// Check if all players are ready to start
+        /// </summary>
         void CheckReadyStatus()
         {
             bool everyoneReady = true;
@@ -70,13 +77,21 @@ namespace PhotonMulpiplayer
             else
             {
                 print("everyone is ready");
+                StartGame();
             }
+        }
+
+        /// <summary>
+        /// Start loading game scene
+        /// </summary>
+        void StartGame()
+        {
+            print("game starting");
         }
 
         public void PlayerIsReady()
         {
-            object teamId;
-            //PhotonNetwork.player.CustomProperties.TryGetValue("team", out teamId);
+            object teamId = PunTeams.Team.none;
             if ((PhotonNetwork.player.CustomProperties.TryGetValue("team", out teamId))&&(PunTeams.Team)teamId != PunTeams.Team.none)
             {
                 PhotonNetwork.player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "isReady", true } });
@@ -86,7 +101,16 @@ namespace PhotonMulpiplayer
             {
                 print("team is not assigned");
             }
-            
+        }
+
+        /// <summary>
+        /// Leave lobbby and go back to Main Menu
+        /// </summary>
+        public void LeaveLobby()
+        {
+            print("leave lobby");
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LoadLevel("MainMenu");
         }
     }
 }

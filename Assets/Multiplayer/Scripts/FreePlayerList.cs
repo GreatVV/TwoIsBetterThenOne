@@ -10,11 +10,16 @@ namespace PhotonMulpiplayer
         List<PhotonPlayer> players;
         [SerializeField] Text text;
 
+
         void Awake()
         {
             players = new List<PhotonPlayer>();
         }
 
+
+        /// <summary>
+        /// Update list of players without team
+        /// </summary>
         public void UpdatePlayerList()
         {
             string list = "";

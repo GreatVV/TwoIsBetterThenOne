@@ -5,14 +5,9 @@ using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
-
 /// <summary>
 /// Implements teams in a room/game with help of player properties. Access them by PhotonPlayer.GetTeam extension.
 /// </summary>
-/// <remarks>
-/// Teams are defined by enum Team. Change this to get more / different teams.
-/// There are no rules when / if you can join a team. You could add this in JoinTeam or something.
-/// </remarks>
 public class PunTeams : MonoBehaviour
 {
     PhotonMulpiplayer.LobbyUI lobbyUI;
@@ -23,10 +18,8 @@ public class PunTeams : MonoBehaviour
     /// <summary>The main list of teams with their player-lists. Automatically kept up to date.</summary>
     /// <remarks>Note that this is static. Can be accessed by PunTeam.PlayersPerTeam. You should not modify this.</remarks>
     public static Dictionary<Team, List<PhotonPlayer>> PlayersPerTeam;
-
-    /// <summary>Defines the player custom property name to use for team affinity of "this" player.</summary>
+    
     public const string TeamPlayerProp = "team";
-
     public const string RolePlayerProp = "role";
 
 
@@ -79,6 +72,10 @@ public class PunTeams : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Swap player roles in a team. Only works if there are both players in a team.
+    /// </summary>
+    /// <param name="team"></param>
     public void SwapPlayers(Team team)
     {
         List<PhotonPlayer> players = PlayersPerTeam[team];
@@ -91,6 +88,9 @@ public class PunTeams : MonoBehaviour
         players[1].SetRole(role);
     }
 
+    /// <summary>
+    /// Swap roles for players in a team
+    /// </summary>
     public void UpdateTeams()
     {
         Array enumVals = Enum.GetValues(typeof(Team));
@@ -107,15 +107,9 @@ public class PunTeams : MonoBehaviour
           
         }
 
-        //for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
-        //{
-        //    print(PhotonNetwork.playerList[i].NickName);
-        //    print(PhotonNetwork.playerList[i].GetTeam());
-        //    print(PhotonNetwork.playerList[i].GetRole());
-        //}
-
         lobbyUI.UpdateUI();
     }
+
 
     public bool JoinTeam(PhotonPlayer currentPlayer, Team team,Role role)
     {
@@ -157,6 +151,7 @@ public static class TeamExtensions
         return PunTeams.Team.none;
     }
 
+
     /// <summary>Switch that player's team to the one you assign.</summary>
     /// <remarks>Internally checks if this player is in that team already or not. Only team switches are actually sent.</remarks>
     /// <param name="player"></param>
@@ -176,6 +171,7 @@ public static class TeamExtensions
         }
     }
 
+
     public static PunTeams.Role GetRole(this PhotonPlayer player)
     {
         object role;
@@ -186,6 +182,7 @@ public static class TeamExtensions
 
         return PunTeams.Role.none;
     }
+
 
     /// <summary>Switch that player's team to the one you assign.</summary>
     /// <remarks>Internally checks if this player is in that team already or not. Only team switches are actually sent.</remarks>
@@ -205,20 +202,6 @@ public static class TeamExtensions
             player.SetCustomProperties(new Hashtable() { { PunTeams.RolePlayerProp, (byte)role } });
         }
     }
-
-    //public static void SetAcceptState(this PhotonPlayer player, PunTeams.Role role)
-    //{
-    //    if (!PhotonNetwork.connectedAndReady)
-    //    {
-    //        Debug.LogWarning("JoinTeam was called in state: " + PhotonNetwork.connectionStateDetailed + ". Not connectedAndReady.");
-    //        return;
-    //    }
-
-    //    PunTeams.Role currentRole = player.GetRole();
-    //    if (currentRole != role)
-    //    {
-    //        player.SetCustomProperties(new Hashtable() { { PunTeams.RolePlayerProp, (byte)role } });
-    //    }
-    //}
+    
 
 }

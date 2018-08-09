@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
-
 using System.Collections;
 
-
-namespace Com.MyCompany.MyGame
+namespace PhotonMulpiplayer
 {
     /// <summary>
     /// Player name input field. Let the user input his name, will appear above the player in the game.
@@ -13,22 +10,9 @@ namespace Com.MyCompany.MyGame
     [RequireComponent(typeof(InputField))]
     public class PlayerNameInputField : MonoBehaviour
     {
-        #region Private Variables
-
-
         // Store the PlayerPref Key to avoid typos
         static string playerNamePrefKey = "PlayerName";
-
-
-        #endregion
-
-
-        #region MonoBehaviour CallBacks
-
-
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-        /// </summary>
+        
         void Start()
         {
             string defaultName = "";
@@ -41,17 +25,9 @@ namespace Com.MyCompany.MyGame
                     _inputField.text = defaultName;
                 }
             }
-
-
+            
             PhotonNetwork.player.NickName = defaultName;
         }
-
-
-        #endregion
-
-
-        #region Public Methods
-
 
         /// <summary>
         /// Sets the name of the player, and save it in the PlayerPrefs for future sessions.
@@ -59,14 +35,9 @@ namespace Com.MyCompany.MyGame
         /// <param name="value">The name of the Player</param>
         public void SetPlayerName(string value)
         {
-            // #Important
             PhotonNetwork.player.NickName = value + " "; // force a trailing space string in case value is an empty string, else playerName would not be updated.
-
-            //print(PhotonNetwork.player.NickName);
+            
             PlayerPrefs.SetString(playerNamePrefKey, value);
         }
-
-
-        #endregion
     }
 }

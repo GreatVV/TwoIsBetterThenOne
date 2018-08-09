@@ -20,6 +20,9 @@ namespace PhotonMulpiplayer
             assignedPlayer = null;
         }
 
+        /// <summary>
+        /// Update button color and text
+        /// </summary>
         public void UpdateButton()
         {
             assignedPlayer = null;
@@ -44,10 +47,13 @@ namespace PhotonMulpiplayer
             else
             {
                 image.color = Color.green;
-                text.text = "";
+                text.text = "<empty>";
             }
         }
 
+        /// <summary>
+        /// Try to assign player to the current team and role
+        /// </summary>
         public void TryAssignPlayer()
         {
             if (assignedPlayer == null)

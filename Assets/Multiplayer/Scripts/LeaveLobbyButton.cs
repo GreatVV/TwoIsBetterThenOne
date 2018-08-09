@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace PhotonMulpiplayer
 {
-    public class ReadyButton : MonoBehaviour
+    public class LeaveLobbyButton : MonoBehaviour
     {
-        public void isReady()
+        public void LeaveLobby()
         {
-            LobbyManager.lobbyManager.PlayerIsReady();
+            LobbyManager.Instance().LeaveLobby();
         }
     }
+
 }
-
-

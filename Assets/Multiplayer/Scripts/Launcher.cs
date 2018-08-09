@@ -8,12 +8,10 @@ namespace PhotonMulpiplayer
     public class Launcher : Photon.PunBehaviour
     {
         string _gameVersion = "1";
-       // [SerializeField] Button joinButton;
         [SerializeField] MainMenuUI menuUI;
 
 
         #region Photon.PunBehaviour CallBacks
-
 
         public override void OnConnectedToMaster()
         {
@@ -76,6 +74,10 @@ namespace PhotonMulpiplayer
             }
         }
 
+
+        /// <summary>
+        /// Join random room if there is any
+        /// </summary>
         public void JoinRoom()
         {
             if (PhotonNetwork.connected)
@@ -88,11 +90,14 @@ namespace PhotonMulpiplayer
             }
         }
 
+
+        /// <summary>
+        /// Create new room
+        /// </summary>
         public void CreateRoom()
         {
             PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 10 }, null);
         }
-
     }
 }
     

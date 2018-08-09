@@ -10,7 +10,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] Button createLobbyButton;
     [SerializeField] GameObject lobbyPanel;
 
-	
+    //Think if I really need this function//////////////////////////////////////////////////////
 	public void Connect()
     {
         joinLobbyButton.interactable = true;
@@ -18,6 +18,9 @@ public class MainMenuUI : MonoBehaviour
         statusText.text = "Connected";
     }
 
+    /// <summary>
+    /// Initialize UI
+    /// </summary>
     public void Init()
     {
         if (PhotonNetwork.connectionState!=ConnectionState.Connected)
